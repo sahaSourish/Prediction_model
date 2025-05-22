@@ -6,6 +6,42 @@ from sklearn.linear_model import Ridge
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics.pairwise import cosine_similarity
 
+
+# Crop conditions reference data
+crop_conditions = [
+    {"crop": "Rice", "soil": "Clayey loam, alluvial, moisture-retentive", "temperature_c": [25, 35], "rainfall_cm": [100, 300], "season": "Kharif", "notes": "Requires standing water; best on level land."},
+    {"crop": "Wheat", "soil": "Well-drained loamy or clay loam", "temperature_c": [10, 25], "rainfall_cm": [50, 100], "season": "Rabi", "notes": "Cool growing season with dry harvesting conditions."},
+    {"crop": "Maize", "soil": "Fertile, well-drained sandy loam", "temperature_c": [21, 27], "rainfall_cm": [50, 100], "season": "Kharif", "notes": "Sensitive to waterlogging; needs full sun."},
+    {"crop": "Sugarcane", "soil": "Deep, well-drained loamy soil with neutral pH", "temperature_c": [20, 30], "rainfall_cm": [100, 250], "season": "Annual", "notes": "Requires long frost-free period and plenty of water."},
+    {"crop": "Cotton", "soil": "Black cotton soil or well-drained loam", "temperature_c": [21, 30], "rainfall_cm": [50, 100], "season": "Kharif", "notes": "Warm, dry weather needed for maturity."},
+    {"crop": "Groundnut", "soil": "Sandy loam or loamy soil with good drainage", "temperature_c": [25, 30], "rainfall_cm": [50, 100], "season": "Kharif", "notes": "Susceptible to waterlogging; needs well-aerated soil."},
+    {"crop": "Soybean", "soil": "Fertile, well-drained alluvial soil", "temperature_c": [20, 30], "rainfall_cm": [60, 100], "season": "Kharif", "notes": "Fixes nitrogen; suited to moderate rainfall regions."},
+    {"crop": "Barley", "soil": "Well-drained loamy to sandy soil", "temperature_c": [12, 25], "rainfall_cm": [30, 90], "season": "Rabi", "notes": "Grows in dry, cool climate with light irrigation."},
+    {"crop": "Bajra", "soil": "Sandy loam and black soil", "temperature_c": [20, 35], "rainfall_cm": [30, 65], "season": "Kharif", "notes": "Tolerant to drought and high temperatures."},
+    {"crop": "Sorghum", "soil": "Loamy to clay soils, tolerates salinity", "temperature_c": [12, 34], "rainfall_cm": [30, 100], "season": "Kharif", "notes": "Drought-resistant; suitable for semi-arid zones."},
+    {"crop": "Cumin", "soil": "Well-drained sandy loam", "temperature_c": [20, 30], "rainfall_cm": [30, 50], "season": "Rabi", "notes": "Requires dry climate during flowering and maturity."},
+    {"crop": "Cowpea", "soil": "Light sandy to loamy soil", "temperature_c": [20, 30], "rainfall_cm": [40, 60], "season": "Kharif", "notes": "Can grow in poor soils; drought-tolerant."},
+    {"crop": "Coffee", "soil": "Loamy soil rich in organic matter", "temperature_c": [15, 28], "rainfall_cm": [150, 250], "season": "Kharif", "notes": "Requires shade and well-distributed rainfall."},
+    {"crop": "Tea", "soil": "Acidic, well-drained loamy soil", "temperature_c": [20, 30], "rainfall_cm": [200, 300], "season": "Year-round", "notes": "Prefers humid, high-rainfall regions with shade."},
+    {"crop": "Banana", "soil": "Rich loamy soil with good drainage", "temperature_c": [26, 30], "rainfall_cm": [100, 200], "season": "Year-round", "notes": "Requires high humidity and well-distributed rainfall."},
+    {"crop": "Papaya", "soil": "Well-drained sandy loam soil", "temperature_c": [22, 35], "rainfall_cm": [100, 150], "season": "Kharif", "notes": "Sensitive to frost; needs protection from strong winds."},
+    {"crop": "Pineapple", "soil": "Light, well-drained sandy loam", "temperature_c": [20, 30], "rainfall_cm": [100, 150], "season": "Kharif", "notes": "Requires good drainage and high humidity."},
+    {"crop": "Tomato", "soil": "Sandy loam rich in organic matter", "temperature_c": [20, 27], "rainfall_cm": [50, 100], "season": "Kharif/Rabi", "notes": "Requires moderate climate and good sunlight."}
+]
+
+
+def display_crop_conditions(selected_crop):
+    for item in crop_conditions:
+        if item["crop"].lower() == selected_crop.lower():
+            st.subheader("Ideal Conditions for Selected Crop")
+            st.write(f"**Crop:** {item['crop']}")
+            st.write(f"**Preferred Soil:** {item['soil']}")
+            st.write(f"**Ideal Temperature Range:** {item['temperature_c'][0]}–{item['temperature_c'][1]} °C")
+            st.write(f"**Ideal Rainfall Range:** {item['rainfall_cm'][0]}–{item['rainfall_cm'][1]} cm/year")
+            st.write(f"**Season:** {item['season']}")
+            st.write(f"**Notes:** {item['notes']}")
+            break
+
 # Load datasets
 agri_df = pd.read_csv("agriculture_dataset.csv")
 crop_df = pd.read_csv("Crop_recommendation.csv")
@@ -53,6 +89,8 @@ st.title("Smart Farm Resource, Yield & Investment Predictor")
 
 # Input selections
 crop = st.selectbox("Select Crop Type", label_encoders['Crop_Type'].classes_)
+
+display_crop_conditions(crop)
 season = st.selectbox("Select Season", label_encoders['Season'].classes_)
 soil = st.selectbox("Select Soil Type", label_encoders['Soil_Type'].classes_)
 area = st.number_input("Enter Farm Area (in acres)", min_value=0.1, step=0.1)
@@ -119,7 +157,7 @@ if st.button("Predict"):
         st.warning("Could not find ideal parameters for the selected crop.")
 
     # Suggest best crops based on profitability and yield
-    st.subheader("Recommended Crops Based on Profitability and Yield")
+    st.subheader("Recommended Crops Based on Profitability and Yield on Provided Soil and Other Environmental Parameters")
     crop_suggestions = []
     for crop_name in label_encoders['Crop_Type'].classes_:
         c_encoded = label_encoders['Crop_Type'].transform([crop_name])[0]
