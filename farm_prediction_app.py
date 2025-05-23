@@ -29,6 +29,18 @@ crop_conditions = [
     {"crop": "Tomato", "soil": "Sandy loam rich in organic matter", "temperature_c": [20, 27], "rainfall_cm": [50, 100], "season": "Kharif/Rabi", "notes": "Requires moderate climate and good sunlight."},
     {"crop": "Potato", "soil": "Well-drained sandy loam or loamy soil", "temperature_c": [15, 20], "rainfall_cm": [100, 150], "season": "Rabi", "notes": "Requires cool climate, sensitive to frost during growth."},
     {"crop": "Carrot", "soil": "Deep, loose, well-drained sandy loam", "temperature_c": [16, 20], "rainfall_cm": [70, 100], "season": "Rabi", "notes": "Requires cool climate and well-prepared seedbed."}
+    {"crop": "Apple", "soil": "Well-drained loamy soil rich in organic matter", "temperature_c": [6, 16], "rainfall_cm": [100, 125], "season": "Rabi", "notes": "Requires chilling hours; suited to temperate regions."},
+    {"crop": "Grapes", "soil": "Deep, fertile, well-drained sandy loam", "temperature_c": [15, 35], "rainfall_cm": [50, 80], "season": "Rabi", "notes": "Needs dry climate at ripening; sensitive to waterlogging."},
+    {"crop": "Mango", "soil": "Well-drained alluvial or loamy soil", "temperature_c": [24, 30], "rainfall_cm": [75, 250], "season": "Kharif", "notes": "Requires dry weather during flowering."},
+    {"crop": "Orange", "soil": "Light loamy soil with good drainage", "temperature_c": [15, 35], "rainfall_cm": [100, 200], "season": "Kharif", "notes": "Prefers dry climate during fruiting."},
+    {"crop": "Watermelon", "soil": "Sandy loam, well-drained", "temperature_c": [25, 30], "rainfall_cm": [40, 70], "season": "Kharif", "notes": "Requires hot climate and moderate irrigation."},
+    {"crop": "Muskmelon", "soil": "Light, sandy loam soil", "temperature_c": [24, 30], "rainfall_cm": [50, 75], "season": "Kharif", "notes": "Warm season crop with low humidity needs."},
+    {"crop": "Moth Beans", "soil": "Sandy or loamy soil, drought-resistant", "temperature_c": [25, 35], "rainfall_cm": [20, 40], "season": "Kharif", "notes": "Requires very low water; good for arid regions."},
+    {"crop": "Lentil", "soil": "Fertile loamy soil with neutral pH", "temperature_c": [15, 25], "rainfall_cm": [40, 85], "season": "Rabi", "notes": "Prefers cool growing conditions with low humidity."},
+    {"crop": "Blackgram", "soil": "Loamy soil rich in organic matter", "temperature_c": [25, 35], "rainfall_cm": [60, 75], "season": "Kharif", "notes": "Needs moist soil during vegetative stage."},
+    {"crop": "Mungbean", "soil": "Well-drained sandy loam", "temperature_c": [25, 35], "rainfall_cm": [60, 90], "season": "Kharif", "notes": "Grows best in warm humid climate."},
+    {"crop": "Pigeonpeas", "soil": "Loamy soil with good drainage", "temperature_c": [26, 30], "rainfall_cm": [60, 100], "season": "Kharif", "notes": "Tolerant to dry conditions."},
+    {"crop": "Chickpea", "soil": "Well-drained loamy soil", "temperature_c": [10, 25], "rainfall_cm": [65, 100], "season": "Rabi", "notes": "Needs cool climate for vegetative growth and dry climate for maturity."}
 
 
 ]
@@ -93,8 +105,19 @@ st.title("Smart Farm Resource, Yield & Investment Predictor")
 
 # Input selections
 # crop = st.selectbox("Select Crop Type", label_encoders['Crop_Type'].classes_)
-crop_names = sorted(crop_df['label'].str.title().unique())
+crop_names = sorted(set(crop_df['label'].str.title().unique()).union(set(label_encoders['Crop_Type'].classes_)))
 crop = st.selectbox("Select Crop Type", crop_names)
+if st.checkbox("Show ideal conditions for all crops"):
+    st.subheader("Ideal Conditions by Crop")
+    for item in crop_conditions:
+        st.markdown(f"""
+        **{item['crop']}**  
+        - Soil: {item['soil']}  
+        - Temperature: {item['temperature_c'][0]}–{item['temperature_c'][1]} °C  
+        - Rainfall: {item['rainfall_cm'][0]}–{item['rainfall_cm'][1]} cm/year  
+        - Season: {item['season']}  
+        - Notes: {item['notes']}  
+        """)
 
 
 display_crop_conditions(crop)
@@ -193,6 +216,7 @@ if st.button("Predict"):
             'Profit': round(prof, 2),
             'Similarity': round(sim, 1)
         })
-
-    sorted_suggestions = sorted(crop_suggestions, key=lambda x: (x['Profit'], x['Yield'], x['Similarity']), reverse=True)[:5]
+  
+    filtered_suggestions = [c for c in crop_suggestions if c['Similarity'] >= 60]
+    sorted_suggestions = sorted(filtered_suggestions, key=lambda x: (x['Profit'], x['Yield'], x['Similarity']), reverse=True)[:5]
     st.table(pd.DataFrame(sorted_suggestions))
