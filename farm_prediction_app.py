@@ -28,7 +28,7 @@ crop_conditions = [
     {"crop": "Pineapple", "soil": "Light, well-drained sandy loam", "temperature_c": [20, 30], "rainfall_cm": [100, 150], "season": "Kharif", "notes": "Requires good drainage and high humidity."},
     {"crop": "Tomato", "soil": "Sandy loam rich in organic matter", "temperature_c": [20, 27], "rainfall_cm": [50, 100], "season": "Kharif/Rabi", "notes": "Requires moderate climate and good sunlight."},
     {"crop": "Potato", "soil": "Well-drained sandy loam or loamy soil", "temperature_c": [15, 20], "rainfall_cm": [100, 150], "season": "Rabi", "notes": "Requires cool climate, sensitive to frost during growth."},
-    {"crop": "Carrot", "soil": "Deep, loose, well-drained sandy loam", "temperature_c": [16, 20], "rainfall_cm": [70, 100], "season": "Rabi", "notes": "Requires cool climate and well-prepared seedbed."}
+    {"crop": "Carrot", "soil": "Deep, loose, well-drained sandy loam", "temperature_c": [16, 20], "rainfall_cm": [70, 100], "season": "Rabi", "notes": "Requires cool climate and well-prepared seedbed."},
     {"crop": "Apple", "soil": "Well-drained loamy soil rich in organic matter", "temperature_c": [6, 16], "rainfall_cm": [100, 125], "season": "Rabi", "notes": "Requires chilling hours; suited to temperate regions."},
     {"crop": "Grapes", "soil": "Deep, fertile, well-drained sandy loam", "temperature_c": [15, 35], "rainfall_cm": [50, 80], "season": "Rabi", "notes": "Needs dry climate at ripening; sensitive to waterlogging."},
     {"crop": "Mango", "soil": "Well-drained alluvial or loamy soil", "temperature_c": [24, 30], "rainfall_cm": [75, 250], "season": "Kharif", "notes": "Requires dry weather during flowering."},
