@@ -27,6 +27,9 @@ crop_conditions = [
     {"crop": "Papaya", "soil": "Well-drained sandy loam soil", "temperature_c": [22, 35], "rainfall_cm": [100, 150], "season": "Kharif", "notes": "Sensitive to frost; needs protection from strong winds."},
     {"crop": "Pineapple", "soil": "Light, well-drained sandy loam", "temperature_c": [20, 30], "rainfall_cm": [100, 150], "season": "Kharif", "notes": "Requires good drainage and high humidity."},
     {"crop": "Tomato", "soil": "Sandy loam rich in organic matter", "temperature_c": [20, 27], "rainfall_cm": [50, 100], "season": "Kharif/Rabi", "notes": "Requires moderate climate and good sunlight."}
+    {"crop": "Potato", "soil": "Well-drained sandy loam", "temperature_c": [15, 20], "rainfall_cm": [50, 150], "season": "Rabi", "notes": "Requires cool climate; sensitive to frost."},
+    {"crop": "Carrot", "soil": "Deep loose loamy soil", "temperature_c": [16, 22], "rainfall_cm": [25, 75], "season": "Rabi", "notes": "Thrives in cool climates with good moisture."},
+
 ]
 
 
