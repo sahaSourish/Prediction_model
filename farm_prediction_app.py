@@ -92,7 +92,10 @@ st.set_page_config(page_title="Smart Farm Planner")
 st.title("Smart Farm Resource, Yield & Investment Predictor")
 
 # Input selections
-crop = st.selectbox("Select Crop Type", label_encoders['Crop_Type'].classes_)
+# crop = st.selectbox("Select Crop Type", label_encoders['Crop_Type'].classes_)
+crop_names = sorted(crop_df['label'].str.title().unique())
+crop = st.selectbox("Select Crop Type", crop_names)
+
 
 display_crop_conditions(crop)
 season = st.selectbox("Select Season", label_encoders['Season'].classes_)
@@ -115,7 +118,9 @@ crop_price = st.number_input("Expected selling price of crop (Rs/kg)", min_value
 
 if st.button("Predict"):
     # Encode user inputs
-    crop_encoded = label_encoders['Crop_Type'].transform([crop])[0]
+    # crop_encoded = label_encoders['Crop_Type'].transform([crop])[0]
+    crop_encoded = label_encoders['Crop_Type'].transform([crop.lower()])[0]
+    
     season_encoded = label_encoders['Season'].transform([season])[0]
     soil_encoded = label_encoders['Soil_Type'].transform([soil])[0]
 
