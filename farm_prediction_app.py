@@ -88,6 +88,19 @@ st.title("Smart Farm Resource, Yield & Investment Predictor")
 
 crop = st.selectbox("Select Crop Type", [c.title() for c in dropdown_crops])
 
+if st.checkbox("Show ideal conditions for all crops"):
+    st.subheader("Ideal Conditions by Crop")
+    for item in crop_conditions:
+        st.markdown(f"""
+        **{item['crop']}**  
+        - Soil: {item['soil']}  
+        - Temperature: {item['temperature_c'][0]}–{item['temperature_c'][1]} °C  
+        - Rainfall: {item['rainfall_cm'][0]}–{item['rainfall_cm'][1]} cm/year  
+        - Season: {item['season']}  
+        - Notes: {item['notes']}  
+        """)
+
+
 season = st.selectbox("Select Season", label_encoders['Season'].classes_)
 soil = st.selectbox("Select Soil Type", label_encoders['Soil_Type'].classes_)
 area = st.number_input("Enter Farm Area (in acres)", min_value=0.1, step=0.1)
