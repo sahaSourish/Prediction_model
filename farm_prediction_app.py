@@ -202,6 +202,6 @@ if st.button("Predict"):
             'Similarity': round(sim, 1)
         })
 
-    filtered_suggestions = [c for c in crop_suggestions if c['Similarity'] >= 60]
-    sorted_suggestions = sorted(filtered_suggestions, key=lambda x: (x['Profit'], x['Yield'], x['Similarity']), reverse=True)[:5]
+    filtered_suggestions = [c for c in crop_suggestions if c['Similarity'] >= 50]
+    sorted_suggestions = sorted(filtered_suggestions, key=lambda x: (x['Similarity'], x['Profit'], x['Yield']), reverse=True)[:5]
     st.table(pd.DataFrame(sorted_suggestions))
