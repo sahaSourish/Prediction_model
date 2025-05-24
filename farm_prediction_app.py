@@ -47,6 +47,18 @@ crop_conditions = [
     {"crop": "wheat", "soil": "Well-drained loamy or clay loam", "temperature_c": [10, 25], "rainfall_cm": [50, 100], "season": "Rabi", "notes": "Cool growing season with dry harvesting conditions."}
 
 ]
+def display_crop_conditions(selected_crop):
+    crop_lower = selected_crop.strip().lower()
+    crop_match = [item for item in crop_conditions if item['crop'] == crop_lower]
+    if crop_match:
+        item = crop_match[0]
+        st.subheader("Ideal Conditions for Selected Crop")
+        st.write(f"**Crop:** {item['crop'].title()}")
+        st.write(f"**Preferred Soil:** {item['soil']}")
+        st.write(f"**Ideal Temperature Range:** {item['temperature_c'][0]}–{item['temperature_c'][1]} °C")
+        st.write(f"**Ideal Rainfall Range:** {item['rainfall_cm'][0]}–{item['rainfall_cm'][1]} cm/year")
+        st.write(f"**Season:** {item['season']}")
+        st.write(f"**Notes:** {item['notes']}")
 
 # Generate dropdown crops list
 dropdown_crops = sorted([item['crop'] for item in crop_conditions])
@@ -81,6 +93,7 @@ for target in targets:
     )
     stacking.fit(X, y[target])
     models[target] = stacking
+
 
 # Streamlit UI
 st.set_page_config(page_title="Smart Farm Planner")
@@ -118,19 +131,6 @@ st.subheader("Market Prices")
 fertilizer_price = st.number_input("Fertilizer cost (Rs/kg)", min_value=0.0, value=25.0)
 pesticide_price = st.number_input("Pesticide cost (Rs/kg)", min_value=0.0, value=40.0)
 crop_price = st.number_input("Expected selling price of crop (Rs/kg)", min_value=0.0, value=20.0)
-
-def display_crop_conditions(selected_crop):
-    crop_lower = selected_crop.strip().lower()
-    crop_match = [item for item in crop_conditions if item['crop'] == crop_lower]
-    if crop_match:
-        item = crop_match[0]
-        st.subheader("Ideal Conditions for Selected Crop")
-        st.write(f"**Crop:** {item['crop'].title()}")
-        st.write(f"**Preferred Soil:** {item['soil']}")
-        st.write(f"**Ideal Temperature Range:** {item['temperature_c'][0]}–{item['temperature_c'][1]} °C")
-        st.write(f"**Ideal Rainfall Range:** {item['rainfall_cm'][0]}–{item['rainfall_cm'][1]} cm/year")
-        st.write(f"**Season:** {item['season']}")
-        st.write(f"**Notes:** {item['notes']}")
 
 if st.button("Predict"):
     crop_encoded = label_encoders['Crop_Type'].transform([crop.strip().lower()])[0]
