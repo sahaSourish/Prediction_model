@@ -87,7 +87,7 @@ st.set_page_config(page_title="Smart Farm Planner")
 st.title("Smart Farm Resource, Yield & Investment Predictor")
 
 crop = st.selectbox("Select Crop Type", [c.title() for c in dropdown_crops])
-
+display_crop_conditions(crop)
 if st.checkbox("Show ideal conditions for all crops"):
     st.subheader("Ideal Conditions by Crop")
     for item in crop_conditions:
@@ -131,8 +131,6 @@ def display_crop_conditions(selected_crop):
         st.write(f"**Ideal Rainfall Range:** {item['rainfall_cm'][0]}–{item['rainfall_cm'][1]} cm/year")
         st.write(f"**Season:** {item['season']}")
         st.write(f"**Notes:** {item['notes']}")
-
-display_crop_conditions(crop)
 
 if st.button("Predict"):
     crop_encoded = label_encoders['Crop_Type'].transform([crop.strip().lower()])[0]
