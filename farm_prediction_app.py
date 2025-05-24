@@ -45,7 +45,7 @@ crop_conditions = [
     {"crop": "tomato", "soil": "Sandy loam rich in organic matter", "temperature_c": [20, 27], "rainfall_cm": [50, 100], "season": "Kharif/Rabi", "notes": "Requires moderate climate and good sunlight."},
     {"crop": "watermelon", "soil": "Sandy loam, well-drained", "temperature_c": [25, 30], "rainfall_cm": [40, 70], "season": "Kharif", "notes": "Requires hot climate and moderate irrigation."},
     {"crop": "wheat", "soil": "Well-drained loamy or clay loam", "temperature_c": [10, 25], "rainfall_cm": [50, 100], "season": "Rabi", "notes": "Cool growing season with dry harvesting conditions."}
-    
+
 ]
 
 # Generate dropdown crops list
