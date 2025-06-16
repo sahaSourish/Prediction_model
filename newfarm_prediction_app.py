@@ -87,10 +87,10 @@ def display_crop_conditions(selected_crop):
         item = crop_match[0]
         st.subheader("Ideal Conditions for Selected Crop")
         st.write(f"**Crop:** {item['crop'].title()}")
+        st.write(f"**Season:** {item['season'].capitalize()}")
         st.write(f"**Preferred Soil:** {item['soil'].capitalize()}")
         st.write(f"**Ideal Temperature Range:** {item['temperature_c'][0]}–{item['temperature_c'][1]} °C")
         st.write(f"**Ideal Rainfall Range:** {item['rainfall_cm'][0]}–{item['rainfall_cm'][1]} cm/year")
-        st.write(f"**Season:** {item['season'].capitalize()}")
         st.write(f"**Notes:** {title_case_excluding_prepositions(item['notes'])}")
 
 # Generate dropdown crops list
