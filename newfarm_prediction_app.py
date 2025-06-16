@@ -14,6 +14,7 @@ from sklearn.model_selection import cross_val_score
 # Load datasets
 agri_df = pd.read_csv("agriculture_dataset.csv")
 crop_df = pd.read_csv("Crop_recommendation.csv")
+st.set_page_config(page_title="Smart Farm Planner")
 
 # Normalize crop names
 crop_df['Crop_Type'] = crop_df['Crop_Type'].str.strip().str.lower()
@@ -129,7 +130,6 @@ final_model.fit(X, y[target_column])
 
 
 # Streamlit UI
-st.set_page_config(page_title="Smart Farm Planner")
 st.title("Smart Farm Resource, Yield & Investment Predictor")
 
 crop = st.selectbox("Select Crop Type", [c.title() for c in dropdown_crops])
