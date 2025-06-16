@@ -9,6 +9,7 @@ from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.svm import SVR
 from sklearn.model_selection import cross_val_score
+from streamlit import cache_resource
 
 # Load datasets
 agri_df = pd.read_csv("agriculture_dataset.csv")
@@ -85,34 +86,38 @@ features = ['Crop_Type', 'Farm_Area(acres)', 'Season', 'Soil_Type', 'N', 'P', 'K
 X = agri_df[features]
 y = agri_df[['Fertilizer_Used(tons)', 'Pesticide_Used(kg)', 'Yield(tons)']]
 
-# Train best model per target using CV
-target_columns = ['Fertilizer_Used(tons)', 'Pesticide_Used(kg)', 'Yield(tons)']
-final_models = {}
-best_model_names = {}
+@cache_resource
+def train_final_models(X, y):
+    target_columns = ['Fertilizer_Used(tons)', 'Pesticide_Used(kg)', 'Yield(tons)']
+    final_models = {}
+    best_model_names = {}
 
-# Model candidates
-models = {
-    "Random Forest": RandomForestRegressor(random_state=42),
-    "Gradient Boosting": GradientBoostingRegressor(random_state=42),
-    "KNN": KNeighborsRegressor(n_neighbors=5),
-    "SVM": SVR(kernel='rbf')
-}
+    models = {
+        "Random Forest": RandomForestRegressor(random_state=42),
+        "Gradient Boosting": GradientBoostingRegressor(random_state=42),
+        "KNN": KNeighborsRegressor(n_neighbors=5),
+        "SVM": SVR(kernel='rbf')
+    }
 
-for target in target_columns:
-    best_model_name = None
-    lowest_rmse = float('inf')
-    for name, model in models.items():
-        scores = cross_val_score(model, X, y[target], scoring='neg_root_mean_squared_error', cv=5)
-        avg_rmse = -scores.mean()
-        if avg_rmse < lowest_rmse:
-            best_model_name = name
-            lowest_rmse = avg_rmse
+    for target in target_columns:
+        best_model_name = None
+        lowest_rmse = float('inf')
+        for name, model in models.items():
+            scores = cross_val_score(model, X, y[target], scoring='neg_root_mean_squared_error', cv=5)
+            avg_rmse = -scores.mean()
+            if avg_rmse < lowest_rmse:
+                best_model_name = name
+                lowest_rmse = avg_rmse
 
-    best_model = models[best_model_name]
-    best_model.fit(X, y[target])
-    final_models[target] = best_model
-    best_model_names[target] = best_model_name
+        best_model = models[best_model_name]
+        best_model.fit(X, y[target])
+        final_models[target] = best_model
+        best_model_names[target] = best_model_name
 
+    return final_models, best_model_names
+
+# ⬇️ Call the cached function here
+final_models, best_model_names = train_final_models(X, y)
 
 # Streamlit UI
 st.title("Smart Farm Resource, Yield & Investment Predictor")
