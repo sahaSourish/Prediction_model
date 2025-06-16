@@ -86,34 +86,6 @@ features = ['Crop_Type', 'Farm_Area(acres)', 'Season', 'Soil_Type', 'N', 'P', 'K
 X = agri_df[features]
 y = agri_df[['Fertilizer_Used(tons)', 'Pesticide_Used(kg)', 'Yield(tons)']]
 
-'''
-# Define the regression target (e.g., Yield prediction only)
-target_column = 'Yield(tons)'
-
-# Model definitions
-models = {
-    "Random Forest": RandomForestRegressor(random_state=42),
-    "Gradient Boosting": GradientBoostingRegressor(random_state=42),
-    "KNN": KNeighborsRegressor(n_neighbors=5),
-    "SVM": SVR(kernel='rbf'),
-    "Ridge": Ridge()
-}
-
-# Select best model via cross-validation (5-fold)
-best_model_name = None
-lowest_rmse = float('inf')
-
-for name, model in models.items():
-    scores = cross_val_score(model, X, y[target_column], scoring='neg_root_mean_squared_error', cv=5)
-    avg_rmse = -scores.mean()
-    if avg_rmse < lowest_rmse:
-        best_model_name = name
-        lowest_rmse = avg_rmse
-
-# Train best model on full dataset
-final_model = models[best_model_name]
-final_model.fit(X, y[target_column])
-'''
 # Train best model per target using CV
 target_columns = ['Fertilizer_Used(tons)', 'Pesticide_Used(kg)', 'Yield(tons)']
 final_models = {}
