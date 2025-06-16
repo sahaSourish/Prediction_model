@@ -34,6 +34,12 @@ DEFAULTS = {
 if 'initialized' not in st.session_state:
     st.session_state.update(DEFAULTS)
     st.session_state.initialized = True
+# Handle reset flag BEFORE widgets are rendered
+if 'reset' in st.session_state and st.session_state.reset:
+    for key, value in DEFAULTS.items():
+        st.session_state[key] = value
+    st.session_state.reset = False
+    st.experimental_rerun()
 
 # Normalize crop names
 crop_df['Crop_Type'] = crop_df['Crop_Type'].str.strip().str.lower()
@@ -289,7 +295,5 @@ if st.button("Predict"):
     st.table(pd.DataFrame(sorted_suggestions))
 
 if st.button("Reset Inputs"):
-    for key, value in DEFAULTS.items():
-        st.session_state[key] = value
-        st.session_state.initialized = False  # Will trigger re-initialization on rerun
+    st.session_state.reset = True
     st.experimental_rerun()
