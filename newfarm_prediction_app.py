@@ -206,9 +206,9 @@ if st.button("Predict"):
         c_encoded = label_encoders['Crop_Type'].transform([crop_name])[0]
         row = pd.DataFrame([[c_encoded, area, season_encoded, soil_encoded, N, P, K, ph, temperature, humidity, rainfall]],
                            columns=features)
-        yld = models['Yield(tons)'].predict(row)[0]
-        fert = models['Fertilizer_Used(tons)'].predict(row)[0]
-        pest = models['Pesticide_Used(kg)'].predict(row)[0]
+        yld = final_models['Yield(tons)'].predict(row)[0]
+        fert = final_models['Fertilizer_Used(tons)'].predict(row)[0]
+        pest = final_models['Pesticide_Used(kg)'].predict(row)[0]
         inc = yld * 1000 * crop_price
         cost = fert * 1000 * fertilizer_price + pest * pesticide_price
         prof = inc - cost
