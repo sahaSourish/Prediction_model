@@ -30,11 +30,10 @@ DEFAULTS = {
     "pesticide_price": 40.0,
     "crop_price": 20.0
 }
-# Initialize Streamlit session state values with defaults
-for key, value in DEFAULTS.items():
-    if key not in st.session_state:
-        st.session_state[key] = value
-
+# Initialize Streamlit session state values with defaults (must run before widgets)
+if 'initialized' not in st.session_state:
+    st.session_state.update(DEFAULTS)
+    st.session_state.initialized = True
 
 # Normalize crop names
 crop_df['Crop_Type'] = crop_df['Crop_Type'].str.strip().str.lower()
@@ -250,7 +249,9 @@ if st.button("Predict"):
     filtered_suggestions = [c for c in crop_suggestions if c['Similarity'] >= 50]
     sorted_suggestions = sorted(filtered_suggestions, key=lambda x: (x['Similarity'], x['Profit'], x['Yield']), reverse=True)[:5]
     st.table(pd.DataFrame(sorted_suggestions))
+
 if st.button("Reset Inputs"):
     for key, value in DEFAULTS.items():
         st.session_state[key] = value
+        st.session_state.initialized = False  # Will trigger re-initialization on rerun
     st.experimental_rerun()
