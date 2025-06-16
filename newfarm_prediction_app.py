@@ -10,7 +10,6 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.svm import SVR
 from sklearn.linear_model import Ridge
 from sklearn.model_selection import cross_val_score
-import matplotlib.pyplot as plt
 
 # Load datasets
 agri_df = pd.read_csv("agriculture_dataset.csv")
