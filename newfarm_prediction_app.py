@@ -183,6 +183,7 @@ if st.button("Predict"):
 
     input_data = pd.DataFrame([[crop_encoded, area, season_encoded, soil_encoded, N, P, K, ph, temperature, humidity, rainfall]],
                               columns=features)
+    st.write("DEBUG:", fert_needed, pest_needed, yield_pred)
     fert_needed = final_models['Fertilizer_Used(tons)'].predict(input_data)[0]
     pest_needed = final_models['Pesticide_Used(kg)'].predict(input_data)[0]
     yield_pred = final_models['Yield(tons)'].predict(input_data)[0]
