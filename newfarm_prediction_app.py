@@ -217,16 +217,6 @@ if st.button("Predict"):
     pest_needed = final_models['Pesticide_Used(kg)'].predict(input_data)[0]
     yield_pred = final_models['Yield(tons)'].predict(input_data)[0]
 
-    st.code(f"""
-    DEBUG LOG:
-    Input Features: {input_data.to_dict('records')[0]}
-    Fertilizer Prediction: {fert_needed}
-    Pesticide Prediction: {pest_needed}
-    Yield Prediction: {yield_pred}
-    """)
-
-    
-
     fert_cost = fert_needed * 1000 * fertilizer_price
     pest_cost = pest_needed * pesticide_price
     income = yield_pred * 1000 * crop_price
