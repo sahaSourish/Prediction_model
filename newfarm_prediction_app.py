@@ -8,7 +8,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.svm import SVR
-from sklearn.linear_model import Ridge
 from sklearn.model_selection import cross_val_score
 
 # Load datasets
@@ -96,8 +95,7 @@ models = {
     "Random Forest": RandomForestRegressor(random_state=42),
     "Gradient Boosting": GradientBoostingRegressor(random_state=42),
     "KNN": KNeighborsRegressor(n_neighbors=5),
-    "SVM": SVR(kernel='rbf'),
-    "Ridge": Ridge()
+    "SVM": SVR(kernel='rbf')
 }
 
 for target in target_columns:
