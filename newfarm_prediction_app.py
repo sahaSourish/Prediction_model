@@ -72,7 +72,13 @@ crop_conditions = [
   {"crop": "wheat", "soil": "loamy", "temperature_c": [10, 25], "rainfall_cm": [50, 100], "season": "Rabi", "notes": "Cool growing season with dry harvesting conditions."}
 ]
 
-
+def title_case_excluding_prepositions(text):
+    prepositions = {'for', 'of', 'and', 'in', 'to', 'on', 'with', 'at', 'by', 'from', 'up', 'about', 'into', 'over', 'after'}
+    words = text.split()
+    titled = [words[0].capitalize()] + [
+        word if word in prepositions else word.capitalize() for word in words[1:]
+    ]
+    return ' '.join(titled)
 
 def display_crop_conditions(selected_crop):
     crop_lower = selected_crop.strip().lower()
@@ -81,11 +87,11 @@ def display_crop_conditions(selected_crop):
         item = crop_match[0]
         st.subheader("Ideal Conditions for Selected Crop")
         st.write(f"**Crop:** {item['crop'].title()}")
-        st.write(f"**Preferred Soil:** {item['soil']}")
+        st.write(f"**Preferred Soil:** {item['soil'].capitalize()}")
         st.write(f"**Ideal Temperature Range:** {item['temperature_c'][0]}–{item['temperature_c'][1]} °C")
         st.write(f"**Ideal Rainfall Range:** {item['rainfall_cm'][0]}–{item['rainfall_cm'][1]} cm/year")
-        st.write(f"**Season:** {item['season']}")
-        st.write(f"**Notes:** {item['notes']}")
+        st.write(f"**Season:** {item['season'].capitalize()}")
+        st.write(f"**Notes:** {title_case_excluding_prepositions(item['notes'])}")
 
 # Generate dropdown crops list
 dropdown_crops = sorted([item['crop'] for item in crop_conditions])
