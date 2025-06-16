@@ -107,31 +107,61 @@ y = agri_df[['Fertilizer_Used(tons)', 'Pesticide_Used(kg)', 'Yield(tons)']]
 
 @cache_resource
 def train_final_models(X, y):
+    from sklearn.model_selection import GridSearchCV
+
     target_columns = ['Fertilizer_Used(tons)', 'Pesticide_Used(kg)', 'Yield(tons)']
     final_models = {}
     best_model_names = {}
 
-    models = {
-        "Random Forest": RandomForestRegressor(random_state=42),
-        "Gradient Boosting": GradientBoostingRegressor(random_state=42),
-        "KNN": KNeighborsRegressor(n_neighbors=5),
-        "SVM": SVR(kernel='rbf')
+    model_grid = {
+        "Random Forest": {
+            "model": RandomForestRegressor(random_state=42),
+            "params": {
+                "n_estimators": [100, 200],
+                "max_depth": [None, 10, 20],
+                "min_samples_split": [2, 5]
+            }
+        },
+        "Gradient Boosting": {
+            "model": GradientBoostingRegressor(random_state=42),
+            "params": {
+                "n_estimators": [100, 150],
+                "learning_rate": [0.05, 0.1],
+                "max_depth": [3, 5]
+            }
+        },
+        "KNN": {
+            "model": KNeighborsRegressor(),
+            "params": {
+                "n_neighbors": [3, 5, 7]
+            }
+        },
+        "SVM": {
+            "model": SVR(),
+            "params": {
+                "C": [0.5, 1, 10],
+                "gamma": ["scale", "auto"]
+            }
+        }
     }
 
     for target in target_columns:
-        best_model_name = None
-        lowest_rmse = float('inf')
-        for name, model in models.items():
-            scores = cross_val_score(model, X, y[target], scoring='neg_root_mean_squared_error', cv=5)
-            avg_rmse = -scores.mean()
-            if avg_rmse < lowest_rmse:
-                best_model_name = name
-                lowest_rmse = avg_rmse
+        best_model = None
+        best_score = float('inf')
+        best_name = None
 
-        best_model = models[best_model_name]
-        best_model.fit(X, y[target])
+        for name, config in model_grid.items():
+            grid = GridSearchCV(config['model'], config['params'], scoring='neg_root_mean_squared_error', cv=3, n_jobs=-1)
+            grid.fit(X, y[target])
+            score = -grid.best_score_
+
+            if score < best_score:
+                best_model = grid.best_estimator_
+                best_score = score
+                best_name = name
+
         final_models[target] = best_model
-        best_model_names[target] = best_model_name
+        best_model_names[target] = best_name
 
     return final_models, best_model_names
 
@@ -186,6 +216,16 @@ if st.button("Predict"):
     fert_needed = final_models['Fertilizer_Used(tons)'].predict(input_data)[0]
     pest_needed = final_models['Pesticide_Used(kg)'].predict(input_data)[0]
     yield_pred = final_models['Yield(tons)'].predict(input_data)[0]
+
+    st.code(f"""
+    DEBUG LOG:
+    Input Features: {input_data.to_dict('records')[0]}
+    Fertilizer Prediction: {fert_needed}
+    Pesticide Prediction: {pest_needed}
+    Yield Prediction: {yield_pred}
+    """)
+
+    
 
     fert_cost = fert_needed * 1000 * fertilizer_price
     pest_cost = pest_needed * pesticide_price
