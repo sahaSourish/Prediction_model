@@ -172,11 +172,6 @@ if st.button("Predict"):
     st.write(f"Fertilizer Needed: {round(fert_needed, 2)} tons")
     st.write(f"Pesticide Needed: {round(pest_needed, 2)} kg")
     st.write(f"Expected Yield: {round(yield_pred, 2)} tons")
-    st.info("Predictions powered by best models selected via 5-fold CV:")
-    st.markdown(f"- Fertilizer Model: **{best_model_names['Fertilizer_Used(tons)']}**")
-    st.markdown(f"- Pesticide Model: **{best_model_names['Pesticide_Used(kg)']}**")
-    st.markdown(f"- Yield Model: **{best_model_names['Yield(tons)']}**")
-
 
     st.subheader("Investment and Income Estimate:")
     st.write(f"Estimated Fertilizer Cost: ₹{fert_cost:,.2f}")
