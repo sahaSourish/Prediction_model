@@ -86,21 +86,6 @@ features = ['Crop_Type', 'Farm_Area(acres)', 'Season', 'Soil_Type', 'N', 'P', 'K
 X = agri_df[features]
 y = agri_df[['Fertilizer_Used(tons)', 'Pesticide_Used(kg)', 'Yield(tons)']]
 
-'''
-# Train models
-models = {}
-targets = ['Fertilizer_Used(tons)', 'Pesticide_Used(kg)', 'Yield(tons)']
-for target in targets:
-    stacking = StackingRegressor(
-        estimators=[
-            ('rf', RandomForestRegressor(random_state=42)),
-            ('gb', GradientBoostingRegressor(random_state=42))
-        ],
-        final_estimator=Ridge()
-    )
-    stacking.fit(X, y[target])
-    models[target] = stacking
-'''
 # Define the regression target (e.g., Yield prediction only)
 target_column = 'Yield(tons)'
 
