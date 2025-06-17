@@ -216,9 +216,9 @@ rainfall = st.number_input("Rainfall (mm)", key="rainfall")
 
 st.subheader("Market Prices")
 st.markdown("Provide the expected market prices for fertilizers, pesticides, and crops to estimate your profit margins.")
-fertilizer_price = st.number_input("Fertilizer cost (Rs/kg)", min_value=0.0, value=25.0, key="fertilizer_price")
-pesticide_price = st.number_input("Pesticide cost (Rs/kg)", min_value=0.0, value=40.0, key="pesticide_price")
-crop_price = st.number_input("Expected selling price of crop (Rs/kg)", min_value=0.0, value=20.0, key="crop_price")
+fertilizer_price = st.number_input("Fertilizer cost (Rs/kg)", min_value=0.0, key="fertilizer_price")
+pesticide_price = st.number_input("Pesticide cost (Rs/kg)", min_value=0.0, key="pesticide_price")
+crop_price = st.number_input("Expected selling price of crop (Rs/kg)", min_value=0.0, key="crop_price")
 
 if st.button("Predict"):
     crop_encoded = label_encoders['Crop_Type'].transform([crop.strip().lower()])[0]
